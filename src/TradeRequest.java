@@ -12,8 +12,9 @@ public class TradeRequest {
     public TradeRequest(Property desiredProperty, int price, Player fromPlayer ,Player toPlayer) {
         this.desiredProperty = desiredProperty;
 
-        this.money = price;
-
+        if (price > 0) {
+            this.money = price;
+        }
         this.toPlayer = toPlayer;
         this.fromPlayer = fromPlayer;
     }
@@ -29,7 +30,9 @@ public class TradeRequest {
     public TradeRequest(Property desiredProperty, Property givenProperty, int price, Player fromPlayer ,Player toPlayer) {
         this.desiredProperty = desiredProperty;
         this.givenProperty = givenProperty;
-        money = price;
+        if (price > 0) {
+            this.money = price;
+        }
 
         this.toPlayer = toPlayer;
         this.fromPlayer = fromPlayer;
@@ -66,8 +69,27 @@ public class TradeRequest {
         if (money > 0) {
             fromPlayer.subtractBalance(money);
         }
-        toPlayer.completeTrade();
         isCompleted = true;
+    }
+
+    public Player getFromPlayer(){
+        return fromPlayer;
+    }
+
+    public Player getToPlayer(){
+        return toPlayer;
+    }
+
+    public Property getDesiredProperty(){
+        return desiredProperty;
+    }
+
+    public Property getGivenProperty(){
+        return givenProperty;
+    }
+
+    public int getMoney() {
+        return money;
     }
 
 }

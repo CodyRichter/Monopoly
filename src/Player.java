@@ -149,6 +149,16 @@ public class Player
         if (value < 39 && value >= 0) position = value;
     }
 
+    /**
+     * Sets a new Trade Request For This Player To Deal With.
+     * @param newRequest New Request Given To Player
+     */
+    public void setTradeRequest(TradeRequest newRequest) {
+        if (trade != null) {
+            trade = newRequest;
+        }
+    }
+
     //---------------------
     //---------------------------------
     // Actions
@@ -178,6 +188,9 @@ public class Player
     }
 
 
+    /**
+     * Completes Trade Player Has.
+     */
     public void completeTrade() {
         if (trade != null && trade.isValidTrade()) {
             trade.doTrade();

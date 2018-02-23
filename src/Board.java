@@ -24,6 +24,10 @@ public class Board
         }
     }
 
+    /**
+     * Creates Board To Display From Individual Tiles
+     * @return Board String
+     */
     public String getBoard()
     {
         StringBuilder buffer = new StringBuilder();
@@ -46,6 +50,7 @@ public class Board
 
     /**
      * Sets Individual Tile To Show Players
+     * Expanded to accomodate up to 9 players 02/22/2018
      */
     private String getTile(int position)
     {

@@ -39,7 +39,7 @@ public class Main {
             System.out.println("Please Enter Number of Players:");
             numPlayers = intScan.nextInt();
             if (numPlayers > 1 && numPlayers < 10) break;
-            System.out.println("\fError: You May Have Between Two - Nine Players Total.");
+            System.out.println("\fError: You May Have Between Two -> Nine Players Total.");
         }
         //----------------------------------------
         Player[] p = new Player[numPlayers];
@@ -53,13 +53,13 @@ public class Main {
             p[i] = new Player(name);
         }
         //----------------------------------------
-            b.addPlayers(p);
+        b.addPlayers(p);
         //----------------------------------------
         while (gameControl) {
             for (int i = 0; i < numPlayers; i++) {
                 //Per Player Setup
                 if (remainingPlayers == 1) break; //Ends Game if One One Player is Remaining.
-                if (p[i].isEliminated() != true) //Ends Game if One One Player is Remaining.
+                if (!p[i].isEliminated()) //Ends Game if One One Player is Remaining.
                 {
                     int input = -1;
                     int[] dice = new int[3];
@@ -216,10 +216,43 @@ public class Main {
                             ArrayList<String> owned = new ArrayList<String>();
                             for (int k = 0; k < 39; k++) {
                                 if (property[k].getOwner().equals(p[i].getName())) {
-                                    owned.add(property[k].getName());
+                                    owned.add(property[k].getName() + " #:" + k);
                                 }
                             }
                             msg = "Owned Properties: " + owned;
+                            msg2 = "[Continue: 0] | [Initiate a Trade: 1] | [Confirm a Trade: 2]";
+
+                            int propertyPrompt = 0;
+                            boolean propertyControl = true;
+                            while (propertyControl) {
+                                updateBoard(p[i], b, msg, msg2);
+                                propertyPrompt = intScan.nextInt();
+
+                                if (propertyPrompt < 0 || propertyPrompt > 2) {
+                                    msg = "Invalid Input! Enter a Number From 0 -> 2";
+                                    continue;
+                                }
+                            }
+                            propertyControl = false;
+
+                            if (propertyPrompt == 0) {
+                                msg = "";
+                                break;
+                            }
+                            //
+                            // Initiate a Trade
+                            //
+                            if (propertyPrompt == 1) {
+
+                            }
+                            //
+                            // Confirm a Trade
+                            //
+                            else if (propertyPrompt == 2) {
+
+                            }
+
+
                             updateBoard(p[i], b, msg);
                         }
                         //
@@ -398,8 +431,7 @@ public class Main {
      * Updates Board With Current Values For Player
      */
     private static void updateBoard(Player p, Board b) {
-        for (int i = 0; i < 40; i++)
-        {
+        for (int i = 0; i < 40; i++) {
             System.out.print("\n");
         }
         System.out.println("\f" +

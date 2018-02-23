@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Player Object
@@ -16,6 +17,7 @@ public class Player
     private String name;
     private Card lastCard;
     private boolean isEliminated = false;
+    private TradeRequest trade;
 
     /**
      * Constructor for objects of class Player
@@ -175,6 +177,14 @@ public class Player
         System.out.println("Game Over!");
     }
 
+
+    public void completeTrade() {
+        if (trade != null && trade.isValidTrade()) {
+            trade.doTrade();
+            trade = null;
+        }
+    }
+
     //---------------------
     //---------------------------------
     // Getters
@@ -243,6 +253,10 @@ public class Player
     {
         if (lastCard.toString() == null) return "[Error] Card Has Not Been Drawn Yet.";
         return lastCard.toString();
+    }
+
+    public TradeRequest getTradeRequest() {
+        return trade;
     }
 }
 

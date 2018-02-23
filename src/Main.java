@@ -8,7 +8,6 @@ import java.util.*;
  */
 public class Main {
     public static Property[] property = new Property[40];
-    public static char[] symbol = new char[3];
     public static int round = 1;
 
     private static String msg = "";
@@ -39,8 +38,8 @@ public class Main {
         {
             System.out.println("Please Enter Number of Players:");
             numPlayers = intScan.nextInt();
-            if (numPlayers > 1 && numPlayers < 4) break;
-            System.out.println("\fError: You May Have Between Two - Three Players Total.");
+            if (numPlayers > 1 && numPlayers < 10) break;
+            System.out.println("\fError: You May Have Between Two - Nine Players Total.");
         }
         //----------------------------------------
         Player[] p = new Player[numPlayers];
@@ -54,10 +53,7 @@ public class Main {
             p[i] = new Player(name);
         }
         //----------------------------------------
-        if (numPlayers == 3) //Creates Board With 3 Players
-            b.addPlayers(p[0], p[1], p[2]);
-        if (numPlayers == 2) //Creates Board With 2 Players
-            b.addPlayers(p[0], p[1]);
+            b.addPlayers(p);
         //----------------------------------------
         while (gameControl) {
             for (int i = 0; i < numPlayers; i++) {
@@ -402,6 +398,10 @@ public class Main {
      * Updates Board With Current Values For Player
      */
     private static void updateBoard(Player p, Board b) {
+        for (int i = 0; i < 40; i++)
+        {
+            System.out.print("\n");
+        }
         System.out.println("\f" +
                 "| " + "Player: " + p.getName() + " (Round " + round + ")\n" +
                 "| " + "Balance: " + p.getBalance() + "\n" +

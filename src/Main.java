@@ -232,10 +232,11 @@ public class Main {
                                     msg = "Invalid Input! Enter a Number From 0 -> 2";
                                     continue;
                                 }
+                                propertyControl = false;
                             }
-                            propertyControl = false;
 
                             if (propertyPrompt == 0) {
+                                //Continue Game
                                 msg = "";
                                 break;
                             }
@@ -243,13 +244,23 @@ public class Main {
                             // Initiate a Trade
                             //
                             if (propertyPrompt == 1) {
-
+                                // TODO: Display Valid Player To Trade To
+                                // TODO: Offer Player Properties To Trade
                             }
                             //
                             // Confirm a Trade
                             //
                             else if (propertyPrompt == 2) {
+                                if (p[i].getTradeRequest() == null) {
+                                    msg = "You Do Not Have Any Pending Trade Requests.";
+                                } else {
+                                    // TODO: Respond To a Trade Request
 
+                                    //
+                                    // What To Do When A Player Is Responding To a Trade Request
+                                    //
+
+                                }
                             }
 
 

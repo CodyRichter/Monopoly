@@ -143,12 +143,12 @@ public class Property
         if (type.equalsIgnoreCase("railroad")) //Will Return Correct Rent If Property Is a Railroad
         {
             int num = 0;
-            for (Property p: Main.property)
+            for (Property p: MonopolyInterface.property)
             {
                 if (p.getID().equalsIgnoreCase("railroad") && !p.getOwner().equalsIgnoreCase("Not Owned") && p.getOwner().equalsIgnoreCase(owner.getName()))
                 {
                     num++;
-                    Main.msg3 = ("Total Matching Railroads: " + num);
+                    Main.getGame().msg3 = ("Total Matching Railroads: " + num);
                 }
             }
 

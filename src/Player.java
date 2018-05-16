@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Player Object
  *
@@ -64,7 +62,7 @@ public class Player
     public void sendToJail()
     {
         jail = true;
-        turnJailed = Main.round;
+        turnJailed = Main.getGame().round;
     }
 
     /**

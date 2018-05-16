@@ -267,7 +267,7 @@ public class Card
             while (true)
             {
                 int i = p.getPosition();
-                if (Main.property[i].getID().equals("railroad"))
+                if (MonopolyInterface.property[i].getID().equals("railroad"))
                 {
                     p.setPosition(i);
                     break;
@@ -283,7 +283,7 @@ public class Card
             while (true)
             {
                 int i = p.getPosition();
-                if (Main.property[i].getID().equals("utility"))
+                if (MonopolyInterface.property[i].getID().equals("utility"))
                 {
                     p.setPosition(i);
                     break;
@@ -323,13 +323,13 @@ public class Card
             int hotel = 0;
             for (int i = 0; i < 40; i++)
             {
-                if (Main.property[i].getPlayerOwner() != null && Main.property[i].getPlayerOwner().equals(p))
+                if (MonopolyInterface.property[i].getPlayerOwner() != null && MonopolyInterface.property[i].getPlayerOwner().equals(p))
                 {
-                    house += Main.property[i].getHouses();
+                    house += MonopolyInterface.property[i].getHouses();
                 }
-                if (Main.property[i].getPlayerOwner() != null && Main.property[i].getPlayerOwner().equals(p))
+                if (MonopolyInterface.property[i].getPlayerOwner() != null && MonopolyInterface.property[i].getPlayerOwner().equals(p))
                 {
-                    hotel += Main.property[i].getHotels();
+                    hotel += MonopolyInterface.property[i].getHotels();
                 }
                 int fee = (40 * house) + (120 * hotel);
                 p.subtractBalance(fee);

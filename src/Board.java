@@ -63,7 +63,7 @@ public class Board
             pos[i] = unownedSymbol;
         }
 
-        if (Main.property[position].getPlayerOwner() != null)
+        if (MonopolyInterface.property[position].getPlayerOwner() != null)
         {
             for (int i = 0; i < pos.length; i++) {
                 pos[i] = ownedSymbol;

@@ -38,7 +38,7 @@ public class Property
         price = cost;
         rent = rentPay;
         rentOrig = rentPay;
-        
+
     }
 
     public Property(int place, String nameInput, int cost, String classification)

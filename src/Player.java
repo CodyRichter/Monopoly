@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Player Object
@@ -16,6 +17,7 @@ public class Player
     private String name;
     private Card lastCard;
     private boolean isEliminated = false;
+    private TradeRequest trade;
 
     /**
      * Constructor for objects of class Player
@@ -147,6 +149,16 @@ public class Player
         if (value < 39 && value >= 0) position = value;
     }
 
+    /**
+     * Sets a new Trade Request For This Player To Deal With.
+     * @param newRequest New Request Given To Player
+     */
+    public void setTradeRequest(TradeRequest newRequest) {
+        if (trade != null) {
+            trade = newRequest;
+        }
+    }
+
     //---------------------
     //---------------------------------
     // Actions
@@ -173,6 +185,17 @@ public class Player
     public void endGame()
     {
         System.out.println("Game Over!");
+    }
+
+
+    /**
+     * Completes Trade Player Has.
+     */
+    public void completeTrade() {
+        if (trade != null && trade.isValidTrade()) {
+            trade.doTrade();
+            trade = null;
+        }
     }
 
     //---------------------
@@ -243,6 +266,10 @@ public class Player
     {
         if (lastCard.toString() == null) return "[Error] Card Has Not Been Drawn Yet.";
         return lastCard.toString();
+    }
+
+    public TradeRequest getTradeRequest() {
+        return trade;
     }
 }
 

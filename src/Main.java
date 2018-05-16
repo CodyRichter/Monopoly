@@ -8,7 +8,6 @@ import java.util.*;
  */
 public class Main {
     public static Property[] property = new Property[40];
-    public static char[] symbol = new char[3];
     public static int round = 1;
 
     private static String msg = "";
@@ -39,8 +38,8 @@ public class Main {
         {
             System.out.println("Please Enter Number of Players:");
             numPlayers = intScan.nextInt();
-            if (numPlayers > 1 && numPlayers < 4) break;
-            System.out.println("\fError: You May Have Between Two - Three Players Total.");
+            if (numPlayers > 1 && numPlayers < 10) break;
+            System.out.println("\fError: You May Have Between Two -> Nine Players Total.");
         }
         //----------------------------------------
         Player[] p = new Player[numPlayers];
@@ -54,16 +53,13 @@ public class Main {
             p[i] = new Player(name);
         }
         //----------------------------------------
-        if (numPlayers == 3) //Creates Board With 3 Players
-            b.addPlayers(p[0], p[1], p[2]);
-        if (numPlayers == 2) //Creates Board With 2 Players
-            b.addPlayers(p[0], p[1]);
+        b.addPlayers(p);
         //----------------------------------------
         while (gameControl) {
             for (int i = 0; i < numPlayers; i++) {
                 //Per Player Setup
                 if (remainingPlayers == 1) break; //Ends Game if One One Player is Remaining.
-                if (p[i].isEliminated() != true) //Ends Game if One One Player is Remaining.
+                if (!p[i].isEliminated()) //Ends Game if One One Player is Remaining.
                 {
                     int input = -1;
                     int[] dice = new int[3];
@@ -220,10 +216,54 @@ public class Main {
                             ArrayList<String> owned = new ArrayList<String>();
                             for (int k = 0; k < 39; k++) {
                                 if (property[k].getOwner().equals(p[i].getName())) {
-                                    owned.add(property[k].getName());
+                                    owned.add(property[k].getName() + " #:" + k);
                                 }
                             }
                             msg = "Owned Properties: " + owned;
+                            msg2 = "[Continue: 0] | [Initiate a Trade: 1] | [Confirm a Trade: 2]";
+
+                            int propertyPrompt = 0;
+                            boolean propertyControl = true;
+                            while (propertyControl) {
+                                updateBoard(p[i], b, msg, msg2);
+                                propertyPrompt = intScan.nextInt();
+
+                                if (propertyPrompt < 0 || propertyPrompt > 2) {
+                                    msg = "Invalid Input! Enter a Number From 0 -> 2";
+                                    continue;
+                                }
+                                propertyControl = false;
+                            }
+
+                            if (propertyPrompt == 0) {
+                                //Continue Game
+                                msg = "";
+                                break;
+                            }
+                            //
+                            // Initiate a Trade
+                            //
+                            if (propertyPrompt == 1) {
+                                // TODO: Display Valid Player To Trade To
+                                // TODO: Offer Player Properties To Trade
+                            }
+                            //
+                            // Confirm a Trade
+                            //
+                            else if (propertyPrompt == 2) {
+                                if (p[i].getTradeRequest() == null) {
+                                    msg = "You Do Not Have Any Pending Trade Requests.";
+                                } else {
+                                    // TODO: Respond To a Trade Request
+
+                                    //
+                                    // What To Do When A Player Is Responding To a Trade Request
+                                    //
+
+                                }
+                            }
+
+
                             updateBoard(p[i], b, msg);
                         }
                         //
@@ -402,6 +442,9 @@ public class Main {
      * Updates Board With Current Values For Player
      */
     private static void updateBoard(Player p, Board b) {
+        for (int i = 0; i < 40; i++) {
+            System.out.print("\n");
+        }
         System.out.println("\f" +
                 "| " + "Player: " + p.getName() + " (Round " + round + ")\n" +
                 "| " + "Balance: " + p.getBalance() + "\n" +

@@ -490,61 +490,82 @@ public class Main {
     }
 
     /**
-     * Rolls Dice For Player
+     * Rolls Dice For Player, And Returns Result Of Both Rolls, As Well As If a Double is Rolled.
+     * @param success Whether Dice Are Allowed to be Rolled. If success==false, Method Will Return Empty Array.
+     * @return Array Containing Dice Rolls. If Rolls Are The Same, The 2nd Index Will be 1.
      */
     private static int[] useDice(boolean success) {
         int[] val = new int[3];
-        if (!success) {
-            val[0] = 0;
-            val[1] = 0;
-            val[2] = 0;
+        if (!success) { //Returns Empty Array If Not Successful
             return val;
         }
+
         Dice d1 = new Dice();
-        Dice d2 = new Dice();
-        d1.roll();
-        d2.roll();
-        val[0] = d1.getFaceValue();
-        val[1] = d2.getFaceValue();
-        val[2] = 0;
-        if (val[0] == val[1]) {
-            val[2] = 1;
+        for (int i = 0; i < 2; i++) { //Rolls Dice Twice And Stores Value In Array.
+            d1.roll();
+            val[i] = d1.getFaceValue();
         }
+
+        if (val[0] == val[1]) { //If Doubles Have Been Rolled, Mark Accordingly In Return Array.
+            val[2] = 1; //1 In Last Index Marks That First Two Results Are The Same
+        }
+
         return val;
     }
 
     /**
-     * Checks Player Position Against Various Criteria
+     * Checks a Position On Board For All Changes That Must Be Made From Landing at a Position
+     * @param p Player to check position of
      */
     private static void checkPosition(Player p) {
-        //In-Game Modifiers
+        if (!checkSpecialPropertiesOnPlayer(p)) { //Checks If Player Is On Special Property
+            //If Player Isn't On Special Property, Check If Property Is Owned By Another Player for Rent Payment
+            checkPropertyPayment(p);
+        }
+    }
+
+    /**
+     * Checks Whether The Property a Player Is On Contains a Special Function, and Executes The Function if it Exists.
+     * @param p Player To Check Property
+     * @return Whether The Player Has Landed on a Special Property
+     */
+    private static boolean checkSpecialPropertiesOnPlayer(Player p) {
         if (property[p.getPosition()].getID().equals("tax")) {
             p.subtractBalance(100);
             msg2 = "You Paid $100 In Taxes!";
+            return true;
         } else if (property[p.getPosition()].getID().equals("chance")) {
             p.drawCard("chance");
             msg2 = "You Drew A Chance Card!";
             msg3 = "Card: " + p.getCardType();
+            return true;
         } else if (property[p.getPosition()].getID().equals("communityChest")) {
             p.drawCard("communityChest");
             msg2 = "You Drew A Community Chest Card!";
             msg3 = "Card: " + p.getCardType();
+            return true;
         } else if (property[p.getPosition()].getID().equals("goToJail")) {
             p.setPosition(10);
             p.sendToJail();
             msg2 = "You Were Arrested! Do Not Pass Go. Do Not Collect $200.";
+            return true;
         }
+        return false;
+    }
 
-        //
-        // Checking If Property Is Owned.
-        //
-        if (property[p.getPosition()].getOwner().toLowerCase().contains("not owned") || property[p.getPosition()].getOwner().equals(p.getName())) {
-        } //Paying $$ To Property Owner
-        else {
+    /**
+     * Checks Property Player Is On For Rent Payments.
+     * @param p Player To Check Property
+     * @return Whether Player Has Paid Rent For a Property
+     */
+    private static boolean checkPropertyPayment(Player p) {
+        if (!property[p.getPosition()].getOwner().toLowerCase().contains("not owned") && !property[p.getPosition()].getOwner().equals(p.getName())) {
             msg2 = "You Paid $" + property[p.getPosition()].getRent() + " to " + property[p.getPosition()].getOwner() + ".";
             p.subtractBalance(property[p.getPosition()].getRent()); //Takes $$ From Player Who Landed on Tile
             property[p.getPosition()].getPlayerOwner().addBalance(property[p.getPosition()].getRent()); //Pays Rent $$ To Property Owner
+            return true; //Player Has Paid Rent
         }
+        return false; //Nothing Has Updated
     }
 
     /**
@@ -561,7 +582,8 @@ public class Main {
     }
 
     /**
-     * Loads All Property Properties Into Game
+     * Loads All Properties Into The Game and Stores Their Values In Property Array.
+     * This Method Should Only Be Called Once During Startup.
      */
     private static void loadProperties() {
         //Special Locations (Location, Display Name, Price, Rent, ID)

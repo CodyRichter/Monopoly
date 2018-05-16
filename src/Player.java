@@ -62,7 +62,7 @@ public class Player
     public void sendToJail()
     {
         jail = true;
-        turnJailed = Main.getGame().round;
+        turnJailed = Main.getGame().getRound();
     }
 
     /**

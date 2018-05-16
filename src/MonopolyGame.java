@@ -9,23 +9,27 @@ import java.util.Scanner;
  */
 public class MonopolyGame extends MonopolyInterface {
 
-    public int round = 1;
+    private String msg1;
+    private String msg2;
+    public String msg3;
 
-    private String msg = "";
-    private String msg2 = "";
-    public String msg3 = "";
-
-    private Scanner intScan = new Scanner(System.in);
-    private Scanner strScan = new Scanner(System.in);
-
-    private int numPlayers;
-    private int remainingPlayers;
+    private Scanner intScan;
+    private Scanner strScan;
 
     private Player[] p;
     private Board b;
 
     public MonopolyGame() {
+        intScan = new Scanner(System.in);
+        strScan = new Scanner(System.in);
 
+        msg1 = "";
+        msg2 = "";
+        msg3 = "";
+
+        round = 1;
+        numPlayers = -1;
+        remainingPlayers = -1;
     }
 
 
@@ -50,7 +54,7 @@ public class MonopolyGame extends MonopolyInterface {
                     int[] dice = new int[3];
                     boolean inputControl = true, playerLoop = true, canDice = true;
                     String message = "";
-                    msg = "";
+                    msg1 = "";
                     msg2 = "";
                     msg3 = "";
                     //
@@ -68,9 +72,9 @@ public class MonopolyGame extends MonopolyInterface {
                                 msg3 = "[Admin] Moved Forward By One Space.";
                                 p[i].addPosition(1);
                                 checkPosition(p[i]); //Checks Player Position Against Various Criteria
-                                updateBoard(p[i], b, msg, msg2, msg3);
+                                updateBoard(p[i], b, msg1, msg2, msg3);
                                 inputControl = false;
-                                msg = "";
+                                msg1 = "";
                                 msg2 = "";
                                 msg3 = "";
                             } else if (input == -2 && DEBUG) //Admin Command to Move Backwards
@@ -78,52 +82,52 @@ public class MonopolyGame extends MonopolyInterface {
                                 p[i].subtractPosition(1);
                                 msg3 = "[Admin] Moved Backward By One Space.";
                                 checkPosition(p[i]); //Checks Player Position Against Various Criteria
-                                updateBoard(p[i], b, msg, msg2, msg3);
+                                updateBoard(p[i], b, msg1, msg2, msg3);
                                 inputControl = false;
-                                msg = "";
+                                msg1 = "";
                                 msg2 = "";
                                 msg3 = "";
                             } else if (input == -3 && DEBUG) //Admin Command to Move Backwards
                             {
                                 msg3 = "[Admin] Given: Get Out Of Jail Free Card (1)";
                                 p[i].giveJailCard();
-                                updateBoard(p[i], b, msg);
+                                updateBoard(p[i], b, msg1);
                                 inputControl = false;
-                                msg = "";
+                                msg1 = "";
                                 msg2 = "";
                                 msg3 = "";
                             } else if (input == -4 && DEBUG) //Admin Command to Teleport
                             {
-                                msg = "[Admin] Please Enter Property To Teleport To:";
-                                updateBoard(p[i], b, msg);
+                                msg1 = "[Admin] Please Enter Property To Teleport To:";
+                                updateBoard(p[i], b, msg1);
                                 input = intScan.nextInt();
                                 if (input > -1 && input < 40) {
-                                    msg = "";
+                                    msg1 = "";
                                     msg2 = "";
                                     p[i].setPosition(input);
                                     checkPosition(p[i]); //Checks Player Position Against Various Criteria
                                     msg3 = "[Admin] Teleported To Property: " + property[p[i].getPosition()].getName();
-                                    updateBoard(p[i], b, msg, msg2, msg3);
+                                    updateBoard(p[i], b, msg1, msg2, msg3);
                                     inputControl = false;
                                 }
                             } else if (input == -5 && DEBUG) //Admin Command to Move Backwards
                             {
-                                msg = "[Admin] Please Enter Card ID String To Draw:";
-                                updateBoard(p[i], b, msg);
+                                msg1 = "[Admin] Please Enter Card ID String To Draw:";
+                                updateBoard(p[i], b, msg1);
                                 String cardInp;
                                 cardInp = strScan.nextLine();
                                 p[i].drawCardDirect(cardInp);
                                 checkPosition(p[i]); //Checks Player Position Against Various Criteria
                                 msg3 = "[Admin] Drew Card Of Type: " + cardInp;
-                                updateBoard(p[i], b, msg, msg2, msg3);
+                                updateBoard(p[i], b, msg1, msg2, msg3);
                                 msg2 = "";
                                 msg3 = "";
                                 inputControl = false;
                             } else if (input == -6 && DEBUG) //Admin Command to Move Backwards
                             {
                                 p[i].setBalance(0);
-                                msg = "";
-                                updateBoard(p[i], b, msg);
+                                msg1 = "";
+                                updateBoard(p[i], b, msg1);
                                 inputControl = false;
                             } else if (input < 0) {
                                 message = "Error: Please Enter a Value Between [0] to [5]";
@@ -165,18 +169,18 @@ public class MonopolyGame extends MonopolyInterface {
                                     if (dice[2] == 0) {
                                         canDice = false;
                                     }
-                                    msg = "You Rolled a " + dice[0] + " and a " + dice[1] + ".";
+                                    msg1 = "You Rolled a " + dice[0] + " and a " + dice[1] + ".";
                                     p[i].addPosition(dice[0] + dice[1]);
                                     msg2 = "";
                                     msg3 = "";
                                     checkPosition(p[i]); //Checks Player Position Against Various Criteria
-                                    updateBoard(p[i], b, msg, msg2, msg3);
-                                    msg = "";
+                                    updateBoard(p[i], b, msg1, msg2, msg3);
+                                    msg1 = "";
                                     msg2 = "";
                                     msg3 = "";
                                 } else //Will Be Run If Player Is In Jail
                                 {
-                                    msg = "You Rolled a " + dice[0] + " and a " + dice[1] + ".";
+                                    msg1 = "You Rolled a " + dice[0] + " and a " + dice[1] + ".";
                                     if (dice[0] == dice[1]) {
                                         msg2 = "You Rolled Doubles And Escaped Jail!";
                                         p[i].escapeJail();
@@ -184,13 +188,13 @@ public class MonopolyGame extends MonopolyInterface {
                                         msg2 = "You Didn't Escape Jail, As You Didn't Roll Doubles.";
                                     }
                                     canDice = false;
-                                    updateBoard(p[i], b, msg, msg2);
+                                    updateBoard(p[i], b, msg1, msg2);
 
                                 }
                             } else //If Player Has Rolled Dice
                             {
-                                msg = "You Can't Roll The Dice More Than Once!";
-                                updateBoard(p[i], b, msg);
+                                msg1 = "You Can't Roll The Dice More Than Once!";
+                                updateBoard(p[i], b, msg1);
                             }
                         }
                         //
@@ -206,17 +210,17 @@ public class MonopolyGame extends MonopolyInterface {
                                     owned.add(property[k].getName() + " #:" + k);
                                 }
                             }
-                            msg = "Owned Properties: " + owned;
+                            msg1 = "Owned Properties: " + owned;
                             msg2 = "[Continue: 0] | [Initiate a Trade: 1] | [Confirm a Trade: 2]";
 
                             int propertyPrompt = 0;
                             boolean propertyControl = true;
                             while (propertyControl) {
-                                updateBoard(p[i], b, msg, msg2);
+                                updateBoard(p[i], b, msg1, msg2);
                                 propertyPrompt = intScan.nextInt();
 
                                 if (propertyPrompt < 0 || propertyPrompt > 2) {
-                                    msg = "Invalid Input! Enter a Number From 0 -> 2";
+                                    msg1 = "Invalid Input! Enter a Number From 0 -> 2";
                                     continue;
                                 }
                                 propertyControl = false;
@@ -224,7 +228,7 @@ public class MonopolyGame extends MonopolyInterface {
 
                             if (propertyPrompt == 0) {
                                 //Continue Game
-                                msg = "";
+                                msg1 = "";
                                 break;
                             }
                             //
@@ -239,7 +243,7 @@ public class MonopolyGame extends MonopolyInterface {
                             //
                             else if (propertyPrompt == 2) {
                                 if (p[i].getTradeRequest() == null) {
-                                    msg = "You Do Not Have Any Pending Trade Requests.";
+                                    msg1 = "You Do Not Have Any Pending Trade Requests.";
                                 } else {
                                     // TODO: Respond To a Trade Request
 
@@ -251,7 +255,7 @@ public class MonopolyGame extends MonopolyInterface {
                             }
 
 
-                            updateBoard(p[i], b, msg);
+                            updateBoard(p[i], b, msg1);
                         }
                         //
                         //
@@ -260,32 +264,32 @@ public class MonopolyGame extends MonopolyInterface {
                         //
                         else if (input == 3 && p[i].getBalance() > 0) //Displays Cards Held By The Player
                         {
-                            msg = "Cards Owned: [Get Out Of Jail Free: " + p[i].getGetOutOfJail() + "]";
+                            msg1 = "Cards Owned: [Get Out Of Jail Free: " + p[i].getGetOutOfJail() + "]";
                             if (p[i].isJailed() && p[i].getGetOutOfJail() > 0) //If User Is In Jail & Has Get Out Of Jail Free Cards
                             {
                                 String jailPrompt;
                                 boolean jailControl = true;
                                 while (jailControl) {
                                     msg2 = "Use A Get Out Of Jail Free Card? (Yes/No)";
-                                    updateBoard(p[i], b, msg, msg2, msg3);
+                                    updateBoard(p[i], b, msg1, msg2, msg3);
                                     msg3 = "";
                                     jailPrompt = strScan.nextLine();
                                     if (jailPrompt.equalsIgnoreCase("yes")) {
-                                        msg = "You Were Released From Jail After Showing The Guards Your Get Out Of Jail Free Card!";
+                                        msg1 = "You Were Released From Jail After Showing The Guards Your Get Out Of Jail Free Card!";
                                         p[i].escapeJail();
-                                        updateBoard(p[i], b, msg);
+                                        updateBoard(p[i], b, msg1);
                                         jailControl = false;
                                     } else if (jailPrompt.equalsIgnoreCase("no")) {
-                                        msg = "You Were Released From Jail After Showing The Guards Your Get Out Of Jail Free Card!";
+                                        msg1 = "You Were Released From Jail After Showing The Guards Your Get Out Of Jail Free Card!";
                                         p[i].escapeJail();
-                                        updateBoard(p[i], b, msg);
+                                        updateBoard(p[i], b, msg1);
                                         jailControl = false;
                                     } else {
                                         msg3 = "Error! Invalid Input.";
                                     }
                                 }
                             } else //Shows Player Cards
-                                updateBoard(p[i], b, msg);
+                                updateBoard(p[i], b, msg1);
                         }
                         //
                         //
@@ -296,12 +300,12 @@ public class MonopolyGame extends MonopolyInterface {
                         {
                             boolean buyControl = true;
                             while (buyControl) {
-                                msg = "[Continue Game: 0] | [Purchase Property: 1] | [Construct Building: 2]";
-                                updateBoard(p[i], b, msg);
+                                msg1 = "[Continue Game: 0] | [Purchase Property: 1] | [Construct Building: 2]";
+                                updateBoard(p[i], b, msg1);
                                 int ans = intScan.nextInt();
                                 if (ans == 0) {
                                     buyControl = false;
-                                    msg = "";
+                                    msg1 = "";
                                 }
                                 //
                                 // Allows Player to Purchase Properties
@@ -310,9 +314,9 @@ public class MonopolyGame extends MonopolyInterface {
                                     if (property[p[i].getPosition()].getPrice() > 0 && p[i].getBalance() > property[p[i].getPosition()].getPrice() && property[p[i].getPosition()].getOwner().equalsIgnoreCase("Not Owned")) {
                                         property[p[i].getPosition()].setOwner(p[i]);
                                         p[i].subtractBalance(property[p[i].getPosition()].getPrice());
-                                        msg = "You Purchased The Property: " + property[p[i].getPosition()].getName() + "!";
+                                        msg1 = "You Purchased The Property: " + property[p[i].getPosition()].getName() + "!";
                                     } else {
-                                        msg = "Error! Unable To Purchase Property: " + property[p[i].getPosition()].getName() + "!";
+                                        msg1 = "Error! Unable To Purchase Property: " + property[p[i].getPosition()].getName() + "!";
                                     }
                                     buyControl = false;
                                 }
@@ -348,11 +352,11 @@ public class MonopolyGame extends MonopolyInterface {
                                         } else if (id.equals("blue") && amount == (2)) {
                                             canBuyHouse = true;
                                         } else if (id.equals("railroad") && amount == (2)) {
-                                            msg = "You May Not Build Homes on a Railroad!";
+                                            msg1 = "You May Not Build Homes on a Railroad!";
                                         } else if (id.equals("utility") && amount == (2)) {
-                                            msg = "You May Not Build Homes on a Utility!";
+                                            msg1 = "You May Not Build Homes on a Utility!";
                                         } else {
-                                            msg = "You Must Own All Of The Properties In a Group to Construct Buildings!";
+                                            msg1 = "You Must Own All Of The Properties In a Group to Construct Buildings!";
                                         }
 
                                         int housesOnProp = property[p[i].getPosition()].getNumBuildings();
@@ -360,19 +364,19 @@ public class MonopolyGame extends MonopolyInterface {
                                         {
                                             property[p[i].getPosition()].addBuilding();
                                             p[i].subtractBalance(200);
-                                            msg = "You Built a " + property[p[i].getPosition()].getBuildings() + " on " + property[p[i].getPosition()].getName() + ".";
+                                            msg1 = "You Built a " + property[p[i].getPosition()].getBuildings() + " on " + property[p[i].getPosition()].getName() + ".";
                                         } else if (p[i].getBalance() > 200 && canBuyHouse && housesOnProp <= 4) {
-                                            msg = "You Don't Have Enough $$ To Build a House!";
+                                            msg1 = "You Don't Have Enough $$ To Build a House!";
                                         } else if (canBuyHouse && housesOnProp <= 4) {
-                                            msg = "You Must Own All Properties In a Group to Build on Them!";
+                                            msg1 = "You Must Own All Properties In a Group to Build on Them!";
                                         } else if (housesOnProp > 4) {
-                                            msg = "There Is No More Space To Build In This Property!";
+                                            msg1 = "There Is No More Space To Build In This Property!";
                                         }
                                         buyControl = false;
                                     }
                                 } else
-                                    msg = "Error! Please Enter a Valid Number!";
-                                updateBoard(p[i], b, msg);
+                                    msg1 = "Error! Please Enter a Valid Number!";
+                                updateBoard(p[i], b, msg1);
                             }
                         }
                         //
@@ -381,15 +385,15 @@ public class MonopolyGame extends MonopolyInterface {
                         //
                         //
                         else if (input == 5 && p[i].getBalance() > 0) {
-                            msg = "Property Info: \n" +
+                            msg1 = "Property Info: \n" +
                                     "| " + "Property Owner: " + property[p[i].getPosition()].getOwner() + "\n" +
                                     "| " + "Rent: " + property[p[i].getPosition()].getRent() + "\n" +
                                     "| " + "Houses Built: " + property[p[i].getPosition()].getHouses() + "\n" +
                                     "| " + "Hotels Built: " + property[p[i].getPosition()].getHotels();
-                            updateBoard(p[i], b, msg);
+                            updateBoard(p[i], b, msg1);
                         } else if (p[i].getBalance() <= 0) {
-                            msg = "Error! Unable To Complete Action: You Have Lost The Game By Running Out of Money!";
-                            updateBoard(p[i], b, msg);
+                            msg1 = "Error! Unable To Complete Action: You Have Lost The Game By Running Out of Money!";
+                            updateBoard(p[i], b, msg1);
                         }
                         if (p[i].getBalance() <= 0) //Removes Player From Game When They Run out of $$
                         {

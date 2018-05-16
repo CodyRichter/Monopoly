@@ -8,6 +8,9 @@ public abstract class MonopolyInterface {
 
     public static Property[] property = new Property[40]; //Holds All Property Values In Monopoly Game
 
+    protected int round;
+    protected int numPlayers;
+    protected int remainingPlayers;
 
     /**
      * Method To Run Monopoly Game and Check All Valid User Inputs
@@ -54,6 +57,11 @@ public abstract class MonopolyInterface {
      * Monopoly Game User Option: Show Info On Property Player Is On
      */
     abstract void propertyInfo();
+
+
+    public int getRound() {
+        return round;
+    }
 
     /**
      * Loads All Properties Into The Game and Stores Their Values In Property Array.
